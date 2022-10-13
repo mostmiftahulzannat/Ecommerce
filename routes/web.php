@@ -38,7 +38,7 @@ Route::prefix('')->group(function(){
  Route::post('/login',[RegisterController::class,'loginStore'])->name('login.store');
 
 
- Route::prefix('customer/')->middleware('auth')->group(function(){
+ Route::prefix('customer/')->middleware('auth','is_customer')->group(function(){
  Route::get('dashboard',[CustomerController::class,'dashboard'])->name('customer.dashboard');
  Route::get('logout',[RegisterController::class,'logOut'])->name('customer.logout');
 
@@ -53,13 +53,13 @@ Route::get('/dashboard', function () {
 //     return view('frontend.layouts.include.pages.home');
 // });
 
-
+//admin login Authentication
 Route::prefix('/admin')->group(function(){
 Route::get('login',[LoginController::class, 'loginPage'])->name('admin.loginpage');
 Route::post('login',[LoginController::class, 'login'])->name('admin.login');
 Route::get('logout',[LoginController::class, 'logout'])->name('admin.logout');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth','is_admin'])->group(function(){
     Route::get('dashboard', function () {
         return view('backend.pages.Dashboard');
     })->name('admin.dashboard');

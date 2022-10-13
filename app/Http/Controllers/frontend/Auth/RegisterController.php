@@ -32,7 +32,7 @@ class RegisterController extends Controller
              'phone'=>$request->phone,
              'password'=>Hash::make($request->password),
     ]);
-    return $user;
+    // return $user;
     $credintials = [
         'name'=>$request->name,
         'password'=>$request->password,
@@ -70,7 +70,7 @@ class RegisterController extends Controller
     {
         Auth::logout();
         $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->regenerateToken();
         return redirect()->route('login.page');
     }
 }
