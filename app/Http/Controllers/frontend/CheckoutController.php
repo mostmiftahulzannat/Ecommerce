@@ -9,9 +9,11 @@ use App\Models\Upazila;
 use App\Models\District;
 use App\Models\OrderDetails;
 use Illuminate\Http\Request;
+use App\Mail\PurchaseConfirm;
 use App\Http\Controllers\Controller;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -73,6 +75,11 @@ Product::findOrFail($cart_item->id)->decrement('product_stock', $cart_item->qty)
         Cart::destroy();
         Session::forget('coupon');
 
+
+        //get order ,billing,order details for meil
+        $order = Order::whereId($order->id)->with(['billing', 'orderdetails'])->get();
+        Mail::to($request->email)->send(new PurchaseConfirm($order));
+        
         Toastr::success('Your Order placed successfully!');
         return redirect()->route('cart.page');
     }

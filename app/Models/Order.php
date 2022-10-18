@@ -10,4 +10,13 @@ class Order extends Model
 {
     use HasFactory, SoftDeletes;
     protected $guarded = ['id'];
+
+    function billing()
+    {
+        return $this->hasOne(Billing::class,'id','billing_id');
+    }
+    function orderdetails()
+    {
+        return $this->hasMany(OrderDetails::class, 'id','order_id');
+    }
 }
