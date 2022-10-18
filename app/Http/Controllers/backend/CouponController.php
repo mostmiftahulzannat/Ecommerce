@@ -41,12 +41,13 @@ class CouponController extends Controller
      */
     public function store(couponStoreRequest $request)
     {
-        $coupons = Coupon::create([
+         Coupon::create([
             'coupon_name'=>$request->coupon_name,
             'discount_amount'=>$request->discount_amount,
             'minimum_purchase_amount'=>$request->minimum_purchase_amount,
             'validity_date'=>$request->validity_date,
            ]);
+
      Toastr::success('Data Stored Successfully');
      return redirect()->route('coupon.index');
     }

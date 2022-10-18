@@ -10,7 +10,7 @@ use App\Http\Controllers\backend\TestmonialController;
 use App\Http\Controllers\frontend\ShoppingCartController;
 use App\Http\Controllers\frontend\Auth\CustomerController;
 use App\Http\Controllers\frontend\Auth\RegisterController;
-
+use App\Http\Controllers\frontend\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,12 +37,20 @@ Route::prefix('')->group(function(){
  Route::get('/login',[RegisterController::class,'loginPage'])->name('login.page');
  Route::post('/login',[RegisterController::class,'loginStore'])->name('login.store');
 
+   /*AJAX Call */
+   Route::get('/upzilla/ajax', [CheckoutController::class, 'loadUpazillaAjax'])->name('loadupazila.ajax');
 
  Route::prefix('customer/')->middleware('auth','is_customer')->group(function(){
  Route::get('dashboard',[CustomerController::class,'dashboard'])->name('customer.dashboard');
  Route::get('logout',[RegisterController::class,'logOut'])->name('customer.logout');
+//Coupon Apply And Remove
+Route::post('cart/apply_coupon',[ShoppingCartController::class,'applyCoupon'])->name('customer.applycoupon');
+Route::get('cart/remove_coupon/{coupon_name}',[ShoppingCartController::class,'removeCoupon'])->name('customer.removecoupon');
 
+//checkout
+Route::get('checkout',[CheckoutController::class,'checkoutPage'])->name('customer.checkout');
 });
+Route::post('placeorder', [CheckoutController::class, 'placeOrder'])->name('customer.placeorder');
 
 
 Route::get('/dashboard', function () {
@@ -70,7 +78,6 @@ Route::resource('category', CategoryController::class);
 Route::resource('testmonial', TestmonialController::class);
 Route::resource('products', ProductController::class);
 Route::resource('coupon',CouponController::class);
-
 
 });
 
